@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -22,14 +22,32 @@ import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
 
 const App = () => {
+
+  const [todos, setTodos] = useState([]);
+
+
+  const addTodo = todo => {
+    if( todo.length > 0 ){
+      setTodos([...todos, {id: Math.random(), text: todo, checked: false}]);
+    }
+  };
+
+  const delTodo = id => {
+    setTodos(todos.filter( todo => todo.id !== id ));
+  }
+
+  const checkTodo = id => {
+    setTodos( todos.map(todo => todo.id === id ? {...todo, checked: !todo.checked} : todo))
+  }
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.appTitle}> My todoList</Text>
       <View style={styles.card}>
-        <TodoInsert />
-        <TodoList/>
-
-
+        <TodoInsert addTodo={addTodo} />
+        <TodoList todos={todos} checkTodo={checkTodo} delTodo={delTodo} />
       </View>
     </SafeAreaView>
   );
@@ -55,8 +73,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     flex: 1,
-    borderTopLeftRadius: 10, // to provide rounded corners
-    borderTopRightRadius: 10, // to provide rounded corners
+    borderTopLeftRadius: 10, 
+    borderTopRightRadius: 10, 
     marginLeft: 10,
     marginRight: 10,
   },

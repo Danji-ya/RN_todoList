@@ -1,11 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {TouchableOpacity, Text, StyleSheet, TextInput, View} from 'react-native';
 
-const TodoInsert = () => {
+const TodoInsert = ({addTodo}) => {
+
+    const [todoItem, setTodoItem] =useState('');
+
+
+
+    const setTodoHandler = e => {
+        setTodoItem(e.nativeEvent.text);
+    };
+
+    const addTodoHandler = e => {
+
+        addTodo(todoItem);
+        setTodoItem('');
+
+    };
+
+
     return (
         <View style={styles.inputContainer}>
-            <TextInput style={styles.input} placeholder="Add an item!"/>
-            <TouchableOpacity style={styles.button}>
+            <TextInput value={todoItem} style={styles.input} placeholder="Add an item!" onChange={setTodoHandler}/>
+            <TouchableOpacity style={styles.button} onPress={addTodoHandler}>
                 <Text style={styles.text}>+</Text>
             </TouchableOpacity>
         </View>
